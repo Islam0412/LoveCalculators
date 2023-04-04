@@ -1,6 +1,5 @@
-package com.geektech.lovecalculator
+package com.geektech.lovecalculator.remote
 
-import okhttp3.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.Query

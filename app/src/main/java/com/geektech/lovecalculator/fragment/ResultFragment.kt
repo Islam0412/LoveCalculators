@@ -1,4 +1,4 @@
-package com.geektech.lovecalculator
+package com.geektech.lovecalculator.fragment
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import com.geektech.lovecalculator.databinding.FragmentResultBinding
+import com.geektech.lovecalculator.remote.LoveModel
 
 class ResultFragment : Fragment() {
 

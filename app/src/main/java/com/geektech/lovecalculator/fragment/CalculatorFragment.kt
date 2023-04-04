@@ -1,4 +1,4 @@
-package com.geektech.lovecalculator
+package com.geektech.lovecalculator.fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -7,8 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.geektech.lovecalculator.R
 import com.geektech.lovecalculator.databinding.FragmentCalculatorBinding
+import com.geektech.lovecalculator.remote.LoveModel
+import com.geektech.lovecalculator.remote.LoveService
+import com.geektech.lovecalculator.viewmodel.LoveViewModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -16,6 +22,7 @@ import retrofit2.Response
 class CalculatorFragment : Fragment() {
 
     private lateinit var binding: FragmentCalculatorBinding
+    private val viewModel: LoveViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,25 +40,11 @@ class CalculatorFragment : Fragment() {
     private fun initListener() {
         with(binding) {
             btnCalculate.setOnClickListener {
-                LoveService().api.getPercentage(
+                viewModel.getLiveLoveModel(
                     etFirstName.text.toString(),
                     etSecondName.text.toString()
-                ).enqueue(object : Callback<LoveModel> {
-                    override fun onResponse(call: Call<LoveModel>, response: Response<LoveModel>) {
-                        if (response.isSuccessful) {
-                            Log.e("ololo", "onResponse: ${response.body()}")
-                            findNavController().navigate(
-                                R.id.resultFragment,
-                                bundleOf("result" to response.body())
-                            )
-                            etFirstName.text.clear()
-                            etSecondName.text.clear()
-                        }
-                    }
-
-                    override fun onFailure(call: Call<LoveModel>, t: Throwable) {
-                        Log.e("ololo", "onResponse: ${t.message}")
-                    }
+                ).observe(viewLifecycleOwner, Observer {
+                    Log.e("ololo", "initListener: $it ")
                 })
             }
         }
