@@ -8,6 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
+import com.geektech.lovecalculator.App
+import com.geektech.lovecalculator.R
 import com.geektech.lovecalculator.databinding.FragmentCalculatorBinding
 import com.geektech.lovecalculator.viewmodel.LoveViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,11 +36,15 @@ class CalculatorFragment : Fragment() {
 
     private fun initListener() {
         with(binding) {
+            btnHistory.setOnClickListener {
+                findNavController().navigate(R.id.historyFragment)
+            }
             btnCalculate.setOnClickListener {
                 viewModel.getLiveLoveModel(
                     etFirstName.text.toString(),
                     etSecondName.text.toString()
                 ).observe(viewLifecycleOwner, Observer {
+                    App.appDatabase.loveDao().insertLove(it)
                     Log.e("ololo", "initListener: $it ")
                 })
             }
